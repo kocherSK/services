@@ -9,6 +9,9 @@ import { of, Subject, from } from 'rxjs';
 import { CustomerService } from '../service/customer.service';
 import { ICustomer, Customer } from '../customer.model';
 
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
+
 import { CustomerUpdateComponent } from './customer-update.component';
 
 describe('Customer Management Update Component', () => {
@@ -16,6 +19,7 @@ describe('Customer Management Update Component', () => {
   let fixture: ComponentFixture<CustomerUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let customerService: CustomerService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,18 +41,41 @@ describe('Customer Management Update Component', () => {
     fixture = TestBed.createComponent(CustomerUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     customerService = TestBed.inject(CustomerService);
+    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call User query and add missing value', () => {
+      const customer: ICustomer = { id: 'CBA' };
+      const user: IUser = { id: 'a5e49ceb-67f1-457c-87ac-7f35392d6e66' };
+      customer.user = user;
+
+      const userCollection: IUser[] = [{ id: '075d7065-cb2a-45ea-a21a-bf109b44ad1e' }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ customer });
+      comp.ngOnInit();
+
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const customer: ICustomer = { id: 'CBA' };
+      const user: IUser = { id: '926ab63c-63c2-4e8d-b848-e4fe3ecb4cff' };
+      customer.user = user;
 
       activatedRoute.data = of({ customer });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(customer));
+      expect(comp.usersSharedCollection).toContain(user);
     });
   });
 
@@ -113,6 +140,16 @@ describe('Customer Management Update Component', () => {
       expect(customerService.update).toHaveBeenCalledWith(customer);
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Tracking relationships identifiers', () => {
+    describe('trackUserById', () => {
+      it('Should return tracked User primary key', () => {
+        const entity = { id: 'ABC' };
+        const trackResult = comp.trackUserById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
     });
   });
 });

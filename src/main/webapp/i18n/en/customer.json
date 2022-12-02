@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "customerLegalEntity": "Customer Legal Entity",
-      "customerHashCode": "Customer Hash Code"
+      "customerHashCode": "Customer Hash Code",
+      "user": "User"
     }
   }
 }

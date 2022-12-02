@@ -169,12 +169,13 @@ public class CustomerResource {
     /**
      * {@code GET  /customers} : get all the customers.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("/customers")
-    public Mono<List<Customer>> getAllCustomers() {
+    public Mono<List<Customer>> getAllCustomers(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Customers");
-        return customerRepository.findAll().collectList();
+        return customerRepository.findAllWithEagerRelationships().collectList();
     }
 
     /**
@@ -196,7 +197,7 @@ public class CustomerResource {
     @GetMapping("/customers/{id}")
     public Mono<ResponseEntity<Customer>> getCustomer(@PathVariable String id) {
         log.debug("REST request to get Customer : {}", id);
-        Mono<Customer> customer = customerRepository.findById(id);
+        Mono<Customer> customer = customerRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(customer);
     }
 

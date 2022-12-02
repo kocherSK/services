@@ -22,6 +22,9 @@ public class Customer implements Serializable {
     @Field("customer_hash_code")
     private String customerHashCode;
 
+    @Field("user")
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getId() {
@@ -61,6 +64,19 @@ public class Customer implements Serializable {
 
     public void setCustomerHashCode(String customerHashCode) {
         this.customerHashCode = customerHashCode;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Customer user(User user) {
+        this.setUser(user);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
