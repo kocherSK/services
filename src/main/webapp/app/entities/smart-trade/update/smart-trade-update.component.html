@@ -1,0 +1,126 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-smart-trade-heading"
+        data-cy="SmartTradeCreateUpdateHeading"
+        jhiTranslate="gatewaybosApp.smartTrade.home.createOrEditLabel"
+      >
+        Create or edit a Smart Trade
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.counterParty" for="field_counterParty">Counter Party</label>
+          <input
+            type="text"
+            class="form-control"
+            name="counterParty"
+            id="field_counterParty"
+            data-cy="counterParty"
+            formControlName="counterParty"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.currencyBuy" for="field_currencyBuy">Currency Buy</label>
+          <input
+            type="text"
+            class="form-control"
+            name="currencyBuy"
+            id="field_currencyBuy"
+            data-cy="currencyBuy"
+            formControlName="currencyBuy"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.currencySell" for="field_currencySell">Currency Sell</label>
+          <input
+            type="text"
+            class="form-control"
+            name="currencySell"
+            id="field_currencySell"
+            data-cy="currencySell"
+            formControlName="currencySell"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.rate" for="field_rate">Rate</label>
+          <input type="number" class="form-control" name="rate" id="field_rate" data-cy="rate" formControlName="rate" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.amount" for="field_amount">Amount</label>
+          <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.contraAmount" for="field_contraAmount">Contra Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="contraAmount"
+            id="field_contraAmount"
+            data-cy="contraAmount"
+            formControlName="contraAmount"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.valueDate" for="field_valueDate">Value Date</label>
+          <div class="input-group">
+            <input
+              id="field_valueDate"
+              data-cy="valueDate"
+              type="text"
+              class="form-control"
+              name="valueDate"
+              ngbDatepicker
+              #valueDateDp="ngbDatepicker"
+              formControlName="valueDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="valueDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.customer" for="field_customer">Customer</label>
+          <select class="form-control" id="field_customer" data-cy="customer" name="customer" formControlName="customer">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="customerOption.id === editForm.get('customer')!.value?.id ? editForm.get('customer')!.value : customerOption"
+              *ngFor="let customerOption of customersSharedCollection; trackBy: trackCustomerById"
+            >
+              {{ customerOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

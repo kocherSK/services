@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="wallet">
+      <h2 data-cy="walletDetailsHeading"><span jhiTranslate="gatewaybosApp.wallet.detail.title">Wallet</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ wallet.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.wallet.currencyCode">Currency Code</span></dt>
+        <dd>
+          <span>{{ wallet.currencyCode }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.wallet.amount">Amount</span></dt>
+        <dd>
+          <span>{{ wallet.amount }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.wallet.customer">Customer</span></dt>
+        <dd>
+          <div *ngIf="wallet.customer">
+            <a [routerLink]="['/customer', wallet.customer?.id, 'view']">{{ wallet.customer?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/wallet', wallet.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="smartTrade">
+      <h2 data-cy="smartTradeDetailsHeading"><span jhiTranslate="gatewaybosApp.smartTrade.detail.title">Smart Trade</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ smartTrade.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.counterParty">Counter Party</span></dt>
+        <dd>
+          <span>{{ smartTrade.counterParty }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.currencyBuy">Currency Buy</span></dt>
+        <dd>
+          <span>{{ smartTrade.currencyBuy }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.currencySell">Currency Sell</span></dt>
+        <dd>
+          <span>{{ smartTrade.currencySell }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.rate">Rate</span></dt>
+        <dd>
+          <span>{{ smartTrade.rate }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.amount">Amount</span></dt>
+        <dd>
+          <span>{{ smartTrade.amount }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.contraAmount">Contra Amount</span></dt>
+        <dd>
+          <span>{{ smartTrade.contraAmount }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.valueDate">Value Date</span></dt>
+        <dd>
+          <span>{{ smartTrade.valueDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.customer">Customer</span></dt>
+        <dd>
+          <div *ngIf="smartTrade.customer">
+            <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/smart-trade', smartTrade.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

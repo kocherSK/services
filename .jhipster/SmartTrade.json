@@ -1,0 +1,52 @@
+{
+  "applications": "*",
+  "changelogDate": "20221202071619",
+  "databaseType": "mongodb",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "smart_trade",
+  "fields": [
+    {
+      "fieldName": "counterParty",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "currencyBuy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "currencySell",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rate",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "contraAmount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "valueDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "SmartTrade",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "customer",
+      "otherEntityRelationshipName": "smartTrade",
+      "relationshipName": "customer",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

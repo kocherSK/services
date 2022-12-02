@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20221202071616",
+  "databaseType": "mongodb",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "customer",
+  "fields": [
+    {
+      "fieldName": "customerLegalEntity",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "customerHashCode",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Customer",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}
