@@ -3,7 +3,6 @@ package com.osttra.fx.blockstream.web.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
 
 import com.osttra.fx.blockstream.IntegrationTest;
 import com.osttra.fx.blockstream.domain.Customer;
@@ -13,30 +12,28 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link CustomerResource} REST controller.
  */
 @IntegrationTest
-@ExtendWith(MockitoExtension.class)
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
 @WithMockUser
 class CustomerResourceIT {
 
+    private static final String DEFAULT_CUSTOMER_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_CUSTOMER_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_CUSTOMER_LEGAL_ENTITY = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOMER_LEGAL_ENTITY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CUSTOMER_PASSWORD = "AAAAAAAAAA";
+    private static final String UPDATED_CUSTOMER_PASSWORD = "BBBBBBBBBB";
 
     private static final String DEFAULT_CUSTOMER_HASH_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOMER_HASH_CODE = "BBBBBBBBBB";
@@ -46,9 +43,6 @@ class CustomerResourceIT {
 
     @Autowired
     private CustomerRepository customerRepository;
-
-    @Mock
-    private CustomerRepository customerRepositoryMock;
 
     @Autowired
     private WebTestClient webTestClient;
@@ -62,7 +56,11 @@ class CustomerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Customer createEntity() {
-        Customer customer = new Customer().customerLegalEntity(DEFAULT_CUSTOMER_LEGAL_ENTITY).customerHashCode(DEFAULT_CUSTOMER_HASH_CODE);
+        Customer customer = new Customer()
+            .customerName(DEFAULT_CUSTOMER_NAME)
+            .customerLegalEntity(DEFAULT_CUSTOMER_LEGAL_ENTITY)
+            .customerPassword(DEFAULT_CUSTOMER_PASSWORD)
+            .customerHashCode(DEFAULT_CUSTOMER_HASH_CODE);
         return customer;
     }
 
@@ -73,7 +71,11 @@ class CustomerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Customer createUpdatedEntity() {
-        Customer customer = new Customer().customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY).customerHashCode(UPDATED_CUSTOMER_HASH_CODE);
+        Customer customer = new Customer()
+            .customerName(UPDATED_CUSTOMER_NAME)
+            .customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY)
+            .customerPassword(UPDATED_CUSTOMER_PASSWORD)
+            .customerHashCode(UPDATED_CUSTOMER_HASH_CODE);
         return customer;
     }
 
@@ -100,7 +102,9 @@ class CustomerResourceIT {
         List<Customer> customerList = customerRepository.findAll().collectList().block();
         assertThat(customerList).hasSize(databaseSizeBeforeCreate + 1);
         Customer testCustomer = customerList.get(customerList.size() - 1);
+        assertThat(testCustomer.getCustomerName()).isEqualTo(DEFAULT_CUSTOMER_NAME);
         assertThat(testCustomer.getCustomerLegalEntity()).isEqualTo(DEFAULT_CUSTOMER_LEGAL_ENTITY);
+        assertThat(testCustomer.getCustomerPassword()).isEqualTo(DEFAULT_CUSTOMER_PASSWORD);
         assertThat(testCustomer.getCustomerHashCode()).isEqualTo(DEFAULT_CUSTOMER_HASH_CODE);
     }
 
@@ -149,7 +153,9 @@ class CustomerResourceIT {
         assertThat(customerList).isNotNull();
         assertThat(customerList).hasSize(1);
         Customer testCustomer = customerList.get(0);
+        assertThat(testCustomer.getCustomerName()).isEqualTo(DEFAULT_CUSTOMER_NAME);
         assertThat(testCustomer.getCustomerLegalEntity()).isEqualTo(DEFAULT_CUSTOMER_LEGAL_ENTITY);
+        assertThat(testCustomer.getCustomerPassword()).isEqualTo(DEFAULT_CUSTOMER_PASSWORD);
         assertThat(testCustomer.getCustomerHashCode()).isEqualTo(DEFAULT_CUSTOMER_HASH_CODE);
     }
 
@@ -171,28 +177,14 @@ class CustomerResourceIT {
             .expectBody()
             .jsonPath("$.[*].id")
             .value(hasItem(customer.getId()))
+            .jsonPath("$.[*].customerName")
+            .value(hasItem(DEFAULT_CUSTOMER_NAME))
             .jsonPath("$.[*].customerLegalEntity")
             .value(hasItem(DEFAULT_CUSTOMER_LEGAL_ENTITY))
+            .jsonPath("$.[*].customerPassword")
+            .value(hasItem(DEFAULT_CUSTOMER_PASSWORD))
             .jsonPath("$.[*].customerHashCode")
             .value(hasItem(DEFAULT_CUSTOMER_HASH_CODE));
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllCustomersWithEagerRelationshipsIsEnabled() {
-        when(customerRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
-
-        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
-
-        verify(customerRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllCustomersWithEagerRelationshipsIsNotEnabled() {
-        when(customerRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
-
-        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
-
-        verify(customerRepositoryMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
@@ -213,8 +205,12 @@ class CustomerResourceIT {
             .expectBody()
             .jsonPath("$.id")
             .value(is(customer.getId()))
+            .jsonPath("$.customerName")
+            .value(is(DEFAULT_CUSTOMER_NAME))
             .jsonPath("$.customerLegalEntity")
             .value(is(DEFAULT_CUSTOMER_LEGAL_ENTITY))
+            .jsonPath("$.customerPassword")
+            .value(is(DEFAULT_CUSTOMER_PASSWORD))
             .jsonPath("$.customerHashCode")
             .value(is(DEFAULT_CUSTOMER_HASH_CODE));
     }
@@ -240,7 +236,11 @@ class CustomerResourceIT {
 
         // Update the customer
         Customer updatedCustomer = customerRepository.findById(customer.getId()).block();
-        updatedCustomer.customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY).customerHashCode(UPDATED_CUSTOMER_HASH_CODE);
+        updatedCustomer
+            .customerName(UPDATED_CUSTOMER_NAME)
+            .customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY)
+            .customerPassword(UPDATED_CUSTOMER_PASSWORD)
+            .customerHashCode(UPDATED_CUSTOMER_HASH_CODE);
 
         webTestClient
             .put()
@@ -255,7 +255,9 @@ class CustomerResourceIT {
         List<Customer> customerList = customerRepository.findAll().collectList().block();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate);
         Customer testCustomer = customerList.get(customerList.size() - 1);
+        assertThat(testCustomer.getCustomerName()).isEqualTo(UPDATED_CUSTOMER_NAME);
         assertThat(testCustomer.getCustomerLegalEntity()).isEqualTo(UPDATED_CUSTOMER_LEGAL_ENTITY);
+        assertThat(testCustomer.getCustomerPassword()).isEqualTo(UPDATED_CUSTOMER_PASSWORD);
         assertThat(testCustomer.getCustomerHashCode()).isEqualTo(UPDATED_CUSTOMER_HASH_CODE);
     }
 
@@ -330,7 +332,7 @@ class CustomerResourceIT {
         Customer partialUpdatedCustomer = new Customer();
         partialUpdatedCustomer.setId(customer.getId());
 
-        partialUpdatedCustomer.customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY);
+        partialUpdatedCustomer.customerName(UPDATED_CUSTOMER_NAME);
 
         webTestClient
             .patch()
@@ -345,7 +347,9 @@ class CustomerResourceIT {
         List<Customer> customerList = customerRepository.findAll().collectList().block();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate);
         Customer testCustomer = customerList.get(customerList.size() - 1);
-        assertThat(testCustomer.getCustomerLegalEntity()).isEqualTo(UPDATED_CUSTOMER_LEGAL_ENTITY);
+        assertThat(testCustomer.getCustomerName()).isEqualTo(UPDATED_CUSTOMER_NAME);
+        assertThat(testCustomer.getCustomerLegalEntity()).isEqualTo(DEFAULT_CUSTOMER_LEGAL_ENTITY);
+        assertThat(testCustomer.getCustomerPassword()).isEqualTo(DEFAULT_CUSTOMER_PASSWORD);
         assertThat(testCustomer.getCustomerHashCode()).isEqualTo(DEFAULT_CUSTOMER_HASH_CODE);
     }
 
@@ -360,7 +364,11 @@ class CustomerResourceIT {
         Customer partialUpdatedCustomer = new Customer();
         partialUpdatedCustomer.setId(customer.getId());
 
-        partialUpdatedCustomer.customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY).customerHashCode(UPDATED_CUSTOMER_HASH_CODE);
+        partialUpdatedCustomer
+            .customerName(UPDATED_CUSTOMER_NAME)
+            .customerLegalEntity(UPDATED_CUSTOMER_LEGAL_ENTITY)
+            .customerPassword(UPDATED_CUSTOMER_PASSWORD)
+            .customerHashCode(UPDATED_CUSTOMER_HASH_CODE);
 
         webTestClient
             .patch()
@@ -375,7 +383,9 @@ class CustomerResourceIT {
         List<Customer> customerList = customerRepository.findAll().collectList().block();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate);
         Customer testCustomer = customerList.get(customerList.size() - 1);
+        assertThat(testCustomer.getCustomerName()).isEqualTo(UPDATED_CUSTOMER_NAME);
         assertThat(testCustomer.getCustomerLegalEntity()).isEqualTo(UPDATED_CUSTOMER_LEGAL_ENTITY);
+        assertThat(testCustomer.getCustomerPassword()).isEqualTo(UPDATED_CUSTOMER_PASSWORD);
         assertThat(testCustomer.getCustomerHashCode()).isEqualTo(UPDATED_CUSTOMER_HASH_CODE);
     }
 

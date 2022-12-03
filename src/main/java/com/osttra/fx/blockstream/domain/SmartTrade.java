@@ -1,6 +1,5 @@
 package com.osttra.fx.blockstream.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -41,7 +40,6 @@ public class SmartTrade implements Serializable {
     private LocalDate valueDate;
 
     @Field("customer")
-    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Customer customer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

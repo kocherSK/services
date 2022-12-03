@@ -16,14 +16,17 @@ public class Customer implements Serializable {
     @Id
     private String id;
 
+    @Field("customer_name")
+    private String customerName;
+
     @Field("customer_legal_entity")
     private String customerLegalEntity;
 
+    @Field("customer_password")
+    private String customerPassword;
+
     @Field("customer_hash_code")
     private String customerHashCode;
-
-    @Field("user")
-    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -40,6 +43,19 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
+    public String getCustomerName() {
+        return this.customerName;
+    }
+
+    public Customer customerName(String customerName) {
+        this.setCustomerName(customerName);
+        return this;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public String getCustomerLegalEntity() {
         return this.customerLegalEntity;
     }
@@ -53,6 +69,19 @@ public class Customer implements Serializable {
         this.customerLegalEntity = customerLegalEntity;
     }
 
+    public String getCustomerPassword() {
+        return this.customerPassword;
+    }
+
+    public Customer customerPassword(String customerPassword) {
+        this.setCustomerPassword(customerPassword);
+        return this;
+    }
+
+    public void setCustomerPassword(String customerPassword) {
+        this.customerPassword = customerPassword;
+    }
+
     public String getCustomerHashCode() {
         return this.customerHashCode;
     }
@@ -64,19 +93,6 @@ public class Customer implements Serializable {
 
     public void setCustomerHashCode(String customerHashCode) {
         this.customerHashCode = customerHashCode;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Customer user(User user) {
-        this.setUser(user);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -103,7 +119,9 @@ public class Customer implements Serializable {
     public String toString() {
         return "Customer{" +
             "id=" + getId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", customerLegalEntity='" + getCustomerLegalEntity() + "'" +
+            ", customerPassword='" + getCustomerPassword() + "'" +
             ", customerHashCode='" + getCustomerHashCode() + "'" +
             "}";
     }

@@ -4,6 +4,7 @@ import static com.osttra.fx.blockstream.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 import com.osttra.fx.blockstream.IntegrationTest;
 import com.osttra.fx.blockstream.domain.SmartTrade;
@@ -16,16 +17,24 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link SmartTradeResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
 @WithMockUser
 class SmartTradeResourceIT {
@@ -56,6 +65,9 @@ class SmartTradeResourceIT {
 
     @Autowired
     private SmartTradeRepository smartTradeRepository;
+
+    @Mock
+    private SmartTradeRepository smartTradeRepositoryMock;
 
     @Autowired
     private WebTestClient webTestClient;
@@ -216,6 +228,24 @@ class SmartTradeResourceIT {
             .value(hasItem(sameNumber(DEFAULT_CONTRA_AMOUNT)))
             .jsonPath("$.[*].valueDate")
             .value(hasItem(DEFAULT_VALUE_DATE.toString()));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSmartTradesWithEagerRelationshipsIsEnabled() {
+        when(smartTradeRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(smartTradeRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSmartTradesWithEagerRelationshipsIsNotEnabled() {
+        when(smartTradeRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(smartTradeRepositoryMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test

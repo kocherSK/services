@@ -38,7 +38,7 @@
               [ngValue]="customerOption.id === editForm.get('customer')!.value?.id ? editForm.get('customer')!.value : customerOption"
               *ngFor="let customerOption of customersCollection; trackBy: trackCustomerById"
             >
-              {{ customerOption.id }}
+              {{ customerOption.customerHashCode }}
             </option>
           </select>
         </div>

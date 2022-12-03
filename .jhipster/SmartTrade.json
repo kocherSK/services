@@ -42,6 +42,7 @@
   "readOnly": false,
   "relationships": [
     {
+      "otherEntityField": "customerHashCode",
       "otherEntityName": "customer",
       "otherEntityRelationshipName": "smartTrade",
       "relationshipName": "customer",

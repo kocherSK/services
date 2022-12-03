@@ -25,7 +25,7 @@
         <dt><span jhiTranslate="gatewaybosApp.wallet.customer">Customer</span></dt>
         <dd>
           <div *ngIf="wallet.customer">
-            <a [routerLink]="['/customer', wallet.customer?.id, 'view']">{{ wallet.customer?.id }}</a>
+            <a [routerLink]="['/customer', wallet.customer?.id, 'view']">{{ wallet.customer?.customerHashCode }}</a>
           </div>
         </dd>
       </dl>

@@ -184,12 +184,13 @@ public class SmartTradeResource {
     /**
      * {@code GET  /smart-trades} : get all the smartTrades.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of smartTrades in body.
      */
     @GetMapping("/smart-trades")
-    public Mono<List<SmartTrade>> getAllSmartTrades() {
+    public Mono<List<SmartTrade>> getAllSmartTrades(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all SmartTrades");
-        return smartTradeRepository.findAll().collectList();
+        return smartTradeRepository.findAllWithEagerRelationships().collectList();
     }
 
     /**
@@ -211,7 +212,7 @@ public class SmartTradeResource {
     @GetMapping("/smart-trades/{id}")
     public Mono<ResponseEntity<SmartTrade>> getSmartTrade(@PathVariable String id) {
         log.debug("REST request to get SmartTrade : {}", id);
-        Mono<SmartTrade> smartTrade = smartTradeRepository.findById(id);
+        Mono<SmartTrade> smartTrade = smartTradeRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(smartTrade);
     }
 

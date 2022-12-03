@@ -48,7 +48,7 @@
           <td>{{ wallet.amount }}</td>
           <td>
             <div *ngIf="wallet.customer">
-              <a [routerLink]="['/customer', wallet.customer?.id, 'view']">{{ wallet.customer?.id }}</a>
+              <a [routerLink]="['/customer', wallet.customer?.id, 'view']">{{ wallet.customer?.customerHashCode }}</a>
             </div>
           </td>
           <td class="text-end">

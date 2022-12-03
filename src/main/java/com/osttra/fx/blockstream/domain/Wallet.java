@@ -1,6 +1,5 @@
 package com.osttra.fx.blockstream.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.springframework.data.annotation.Id;

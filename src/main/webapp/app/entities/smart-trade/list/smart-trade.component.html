@@ -58,7 +58,7 @@
           <td>{{ smartTrade.valueDate | formatMediumDate }}</td>
           <td>
             <div *ngIf="smartTrade.customer">
-              <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.id }}</a>
+              <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.customerHashCode }}</a>
             </div>
           </td>
           <td class="text-end">

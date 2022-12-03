@@ -14,17 +14,21 @@
         <dd>
           <span>{{ customer.id }}</span>
         </dd>
+        <dt><span jhiTranslate="gatewaybosApp.customer.customerName">Customer Name</span></dt>
+        <dd>
+          <span>{{ customer.customerName }}</span>
+        </dd>
         <dt><span jhiTranslate="gatewaybosApp.customer.customerLegalEntity">Customer Legal Entity</span></dt>
         <dd>
           <span>{{ customer.customerLegalEntity }}</span>
         </dd>
+        <dt><span jhiTranslate="gatewaybosApp.customer.customerPassword">Customer Password</span></dt>
+        <dd>
+          <span>{{ customer.customerPassword }}</span>
+        </dd>
         <dt><span jhiTranslate="gatewaybosApp.customer.customerHashCode">Customer Hash Code</span></dt>
         <dd>
           <span>{{ customer.customerHashCode }}</span>
-        </dd>
-        <dt><span jhiTranslate="gatewaybosApp.customer.user">User</span></dt>
-        <dd>
-          <span>{{ customer.user?.login }}</span>
         </dd>
       </dl>
 

@@ -45,7 +45,7 @@
         <dt><span jhiTranslate="gatewaybosApp.smartTrade.customer">Customer</span></dt>
         <dd>
           <div *ngIf="smartTrade.customer">
-            <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.id }}</a>
+            <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.customerHashCode }}</a>
           </div>
         </dd>
       </dl>

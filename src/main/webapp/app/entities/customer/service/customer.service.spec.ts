@@ -21,7 +21,9 @@ describe('Customer Service', () => {
 
     elemDefault = {
       id: 'AAAAAAA',
+      customerName: 'AAAAAAA',
       customerLegalEntity: 'AAAAAAA',
+      customerPassword: 'AAAAAAA',
       customerHashCode: 'AAAAAAA',
     };
   });
@@ -58,7 +60,9 @@ describe('Customer Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 'BBBBBB',
+          customerName: 'BBBBBB',
           customerLegalEntity: 'BBBBBB',
+          customerPassword: 'BBBBBB',
           customerHashCode: 'BBBBBB',
         },
         elemDefault
@@ -76,7 +80,8 @@ describe('Customer Service', () => {
     it('should partial update a Customer', () => {
       const patchObject = Object.assign(
         {
-          customerLegalEntity: 'BBBBBB',
+          customerName: 'BBBBBB',
+          customerPassword: 'BBBBBB',
         },
         new Customer()
       );
@@ -96,7 +101,9 @@ describe('Customer Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 'BBBBBB',
+          customerName: 'BBBBBB',
           customerLegalEntity: 'BBBBBB',
+          customerPassword: 'BBBBBB',
           customerHashCode: 'BBBBBB',
         },
         elemDefault
@@ -149,7 +156,7 @@ describe('Customer Service', () => {
       });
 
       it('should add only unique Customer to an array', () => {
-        const customerArray: ICustomer[] = [{ id: 'ABC' }, { id: 'CBA' }, { id: 'f1fa7293-22f3-4e23-8043-e0992ac31e53' }];
+        const customerArray: ICustomer[] = [{ id: 'ABC' }, { id: 'CBA' }, { id: 'fa729322-f3e2-4380-83e0-992ac31e53c3' }];
         const customerCollection: ICustomer[] = [{ id: 'ABC' }];
         expectedResult = service.addCustomerToCollectionIfMissing(customerCollection, ...customerArray);
         expect(expectedResult).toHaveLength(3);

@@ -33,9 +33,10 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="gatewaybosApp.customer.customerName">Customer Name</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.customer.customerLegalEntity">Customer Legal Entity</span></th>
+          <th scope="col"><span jhiTranslate="gatewaybosApp.customer.customerPassword">Customer Password</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.customer.customerHashCode">Customer Hash Code</span></th>
-          <th scope="col"><span jhiTranslate="gatewaybosApp.customer.user">User</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -44,11 +45,10 @@
           <td>
             <a [routerLink]="['/customer', customer.id, 'view']">{{ customer.id }}</a>
           </td>
+          <td>{{ customer.customerName }}</td>
           <td>{{ customer.customerLegalEntity }}</td>
+          <td>{{ customer.customerPassword }}</td>
           <td>{{ customer.customerHashCode }}</td>
-          <td>
-            {{ customer.user?.login }}
-          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

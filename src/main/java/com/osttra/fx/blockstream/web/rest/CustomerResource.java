@@ -144,8 +144,14 @@ public class CustomerResource {
                 Mono<Customer> result = customerRepository
                     .findById(customer.getId())
                     .map(existingCustomer -> {
+                        if (customer.getCustomerName() != null) {
+                            existingCustomer.setCustomerName(customer.getCustomerName());
+                        }
                         if (customer.getCustomerLegalEntity() != null) {
                             existingCustomer.setCustomerLegalEntity(customer.getCustomerLegalEntity());
+                        }
+                        if (customer.getCustomerPassword() != null) {
+                            existingCustomer.setCustomerPassword(customer.getCustomerPassword());
                         }
                         if (customer.getCustomerHashCode() != null) {
                             existingCustomer.setCustomerHashCode(customer.getCustomerHashCode());
@@ -169,13 +175,12 @@ public class CustomerResource {
     /**
      * {@code GET  /customers} : get all the customers.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("/customers")
-    public Mono<List<Customer>> getAllCustomers(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public Mono<List<Customer>> getAllCustomers() {
         log.debug("REST request to get all Customers");
-        return customerRepository.findAllWithEagerRelationships().collectList();
+        return customerRepository.findAll().collectList();
     }
 
     /**
@@ -197,7 +202,7 @@ public class CustomerResource {
     @GetMapping("/customers/{id}")
     public Mono<ResponseEntity<Customer>> getCustomer(@PathVariable String id) {
         log.debug("REST request to get Customer : {}", id);
-        Mono<Customer> customer = customerRepository.findOneWithEagerRelationships(id);
+        Mono<Customer> customer = customerRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(customer);
     }
 

@@ -18,9 +18,10 @@
         "title": "Customer"
       },
       "id": "ID",
+      "customerName": "Customer Name",
       "customerLegalEntity": "Customer Legal Entity",
-      "customerHashCode": "Customer Hash Code",
-      "user": "User"
+      "customerPassword": "Customer Password",
+      "customerHashCode": "Customer Hash Code"
     }
   }
 }

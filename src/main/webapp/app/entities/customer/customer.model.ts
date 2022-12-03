@@ -1,18 +1,18 @@
-import { IUser } from 'app/entities/user/user.model';
-
 export interface ICustomer {
   id?: string;
+  customerName?: string | null;
   customerLegalEntity?: string | null;
+  customerPassword?: string | null;
   customerHashCode?: string | null;
-  user?: IUser | null;
 }
 
 export class Customer implements ICustomer {
   constructor(
     public id?: string,
+    public customerName?: string | null,
     public customerLegalEntity?: string | null,
-    public customerHashCode?: string | null,
-    public user?: IUser | null
+    public customerPassword?: string | null,
+    public customerHashCode?: string | null
   ) {}
 }
 
