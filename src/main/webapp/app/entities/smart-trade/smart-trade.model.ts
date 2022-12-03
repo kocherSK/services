@@ -10,6 +10,7 @@ export interface ISmartTrade {
   contraAmount?: number | null;
   valueDate?: dayjs.Dayjs | null;
   transactionId?: string | null;
+  direction?: string | null;
 }
 
 export class SmartTrade implements ISmartTrade {
@@ -22,7 +23,8 @@ export class SmartTrade implements ISmartTrade {
     public amount?: number | null,
     public contraAmount?: number | null,
     public valueDate?: dayjs.Dayjs | null,
-    public transactionId?: string | null
+    public transactionId?: string | null,
+    public direction?: string | null
   ) {}
 }
 

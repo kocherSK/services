@@ -25,7 +25,8 @@
       "amount": "Amount",
       "contraAmount": "Contra Amount",
       "valueDate": "Value Date",
-      "transactionId": "Transaction Id"
+      "transactionId": "Transaction Id",
+      "direction": "Direction"
     }
   }
 }

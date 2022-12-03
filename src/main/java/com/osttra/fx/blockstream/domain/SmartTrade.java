@@ -42,6 +42,9 @@ public class SmartTrade implements Serializable {
     @Field("transaction_id")
     private String transactionId;
 
+    @Field("direction")
+    private String direction;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getId() {
@@ -161,6 +164,19 @@ public class SmartTrade implements Serializable {
         this.transactionId = transactionId;
     }
 
+    public String getDirection() {
+        return this.direction;
+    }
+
+    public SmartTrade direction(String direction) {
+        this.setDirection(direction);
+        return this;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -193,6 +209,7 @@ public class SmartTrade implements Serializable {
             ", contraAmount=" + getContraAmount() +
             ", valueDate='" + getValueDate() + "'" +
             ", transactionId='" + getTransactionId() + "'" +
+            ", direction='" + getDirection() + "'" +
             "}";
     }
 }

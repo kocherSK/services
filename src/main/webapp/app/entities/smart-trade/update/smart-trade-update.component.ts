@@ -25,6 +25,7 @@ export class SmartTradeUpdateComponent implements OnInit {
     contraAmount: [],
     valueDate: [],
     transactionId: [],
+    direction: [],
   });
 
   constructor(protected smartTradeService: SmartTradeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -79,6 +80,7 @@ export class SmartTradeUpdateComponent implements OnInit {
       contraAmount: smartTrade.contraAmount,
       valueDate: smartTrade.valueDate,
       transactionId: smartTrade.transactionId,
+      direction: smartTrade.direction,
     });
   }
 
@@ -94,6 +96,7 @@ export class SmartTradeUpdateComponent implements OnInit {
       contraAmount: this.editForm.get(['contraAmount'])!.value,
       valueDate: this.editForm.get(['valueDate'])!.value,
       transactionId: this.editForm.get(['transactionId'])!.value,
+      direction: this.editForm.get(['direction'])!.value,
     };
   }
 }

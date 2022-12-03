@@ -37,6 +37,10 @@
     {
       "fieldName": "transactionId",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "direction",
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,

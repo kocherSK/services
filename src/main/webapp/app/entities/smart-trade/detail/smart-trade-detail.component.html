@@ -46,6 +46,10 @@
         <dd>
           <span>{{ smartTrade.transactionId }}</span>
         </dd>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.direction">Direction</span></dt>
+        <dd>
+          <span>{{ smartTrade.direction }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
