@@ -8,8 +8,6 @@ import { of, Subject, from } from 'rxjs';
 
 import { SmartTradeService } from '../service/smart-trade.service';
 import { ISmartTrade, SmartTrade } from '../smart-trade.model';
-import { ICustomer } from 'app/entities/customer/customer.model';
-import { CustomerService } from 'app/entities/customer/service/customer.service';
 
 import { SmartTradeUpdateComponent } from './smart-trade-update.component';
 
@@ -18,7 +16,6 @@ describe('SmartTrade Management Update Component', () => {
   let fixture: ComponentFixture<SmartTradeUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let smartTradeService: SmartTradeService;
-  let customerService: CustomerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -40,41 +37,18 @@ describe('SmartTrade Management Update Component', () => {
     fixture = TestBed.createComponent(SmartTradeUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     smartTradeService = TestBed.inject(SmartTradeService);
-    customerService = TestBed.inject(CustomerService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call Customer query and add missing value', () => {
-      const smartTrade: ISmartTrade = { id: 'CBA' };
-      const customer: ICustomer = { id: '5ed90e7e-e337-4f6f-85ce-d326129641c5' };
-      smartTrade.customer = customer;
-
-      const customerCollection: ICustomer[] = [{ id: 'e6e9f023-b6ac-4ebf-a8ec-31725707e777' }];
-      jest.spyOn(customerService, 'query').mockReturnValue(of(new HttpResponse({ body: customerCollection })));
-      const additionalCustomers = [customer];
-      const expectedCollection: ICustomer[] = [...additionalCustomers, ...customerCollection];
-      jest.spyOn(customerService, 'addCustomerToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ smartTrade });
-      comp.ngOnInit();
-
-      expect(customerService.query).toHaveBeenCalled();
-      expect(customerService.addCustomerToCollectionIfMissing).toHaveBeenCalledWith(customerCollection, ...additionalCustomers);
-      expect(comp.customersSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const smartTrade: ISmartTrade = { id: 'CBA' };
-      const customer: ICustomer = { id: 'ac03ae22-5a0c-4e36-9393-3469f5d84b78' };
-      smartTrade.customer = customer;
 
       activatedRoute.data = of({ smartTrade });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(smartTrade));
-      expect(comp.customersSharedCollection).toContain(customer);
     });
   });
 
@@ -139,16 +113,6 @@ describe('SmartTrade Management Update Component', () => {
       expect(smartTradeService.update).toHaveBeenCalledWith(smartTrade);
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('Tracking relationships identifiers', () => {
-    describe('trackCustomerById', () => {
-      it('Should return tracked Customer primary key', () => {
-        const entity = { id: 'ABC' };
-        const trackResult = comp.trackCustomerById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
     });
   });
 });

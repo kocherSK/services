@@ -4,7 +4,6 @@ import static com.osttra.fx.blockstream.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
 
 import com.osttra.fx.blockstream.IntegrationTest;
 import com.osttra.fx.blockstream.domain.SmartTrade;
@@ -17,24 +16,16 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link SmartTradeResource} REST controller.
  */
 @IntegrationTest
-@ExtendWith(MockitoExtension.class)
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
 @WithMockUser
 class SmartTradeResourceIT {
@@ -60,14 +51,14 @@ class SmartTradeResourceIT {
     private static final LocalDate DEFAULT_VALUE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_VALUE_DATE = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_TRANSACTION_ID = "AAAAAAAAAA";
+    private static final String UPDATED_TRANSACTION_ID = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/smart-trades";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
     private SmartTradeRepository smartTradeRepository;
-
-    @Mock
-    private SmartTradeRepository smartTradeRepositoryMock;
 
     @Autowired
     private WebTestClient webTestClient;
@@ -88,7 +79,8 @@ class SmartTradeResourceIT {
             .rate(DEFAULT_RATE)
             .amount(DEFAULT_AMOUNT)
             .contraAmount(DEFAULT_CONTRA_AMOUNT)
-            .valueDate(DEFAULT_VALUE_DATE);
+            .valueDate(DEFAULT_VALUE_DATE)
+            .transactionId(DEFAULT_TRANSACTION_ID);
         return smartTrade;
     }
 
@@ -106,7 +98,8 @@ class SmartTradeResourceIT {
             .rate(UPDATED_RATE)
             .amount(UPDATED_AMOUNT)
             .contraAmount(UPDATED_CONTRA_AMOUNT)
-            .valueDate(UPDATED_VALUE_DATE);
+            .valueDate(UPDATED_VALUE_DATE)
+            .transactionId(UPDATED_TRANSACTION_ID);
         return smartTrade;
     }
 
@@ -140,6 +133,7 @@ class SmartTradeResourceIT {
         assertThat(testSmartTrade.getAmount()).isEqualByComparingTo(DEFAULT_AMOUNT);
         assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(DEFAULT_CONTRA_AMOUNT);
         assertThat(testSmartTrade.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
+        assertThat(testSmartTrade.getTransactionId()).isEqualTo(DEFAULT_TRANSACTION_ID);
     }
 
     @Test
@@ -194,6 +188,7 @@ class SmartTradeResourceIT {
         assertThat(testSmartTrade.getAmount()).isEqualByComparingTo(DEFAULT_AMOUNT);
         assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(DEFAULT_CONTRA_AMOUNT);
         assertThat(testSmartTrade.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
+        assertThat(testSmartTrade.getTransactionId()).isEqualTo(DEFAULT_TRANSACTION_ID);
     }
 
     @Test
@@ -227,25 +222,9 @@ class SmartTradeResourceIT {
             .jsonPath("$.[*].contraAmount")
             .value(hasItem(sameNumber(DEFAULT_CONTRA_AMOUNT)))
             .jsonPath("$.[*].valueDate")
-            .value(hasItem(DEFAULT_VALUE_DATE.toString()));
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllSmartTradesWithEagerRelationshipsIsEnabled() {
-        when(smartTradeRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
-
-        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
-
-        verify(smartTradeRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllSmartTradesWithEagerRelationshipsIsNotEnabled() {
-        when(smartTradeRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
-
-        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
-
-        verify(smartTradeRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+            .value(hasItem(DEFAULT_VALUE_DATE.toString()))
+            .jsonPath("$.[*].transactionId")
+            .value(hasItem(DEFAULT_TRANSACTION_ID));
     }
 
     @Test
@@ -279,7 +258,9 @@ class SmartTradeResourceIT {
             .jsonPath("$.contraAmount")
             .value(is(sameNumber(DEFAULT_CONTRA_AMOUNT)))
             .jsonPath("$.valueDate")
-            .value(is(DEFAULT_VALUE_DATE.toString()));
+            .value(is(DEFAULT_VALUE_DATE.toString()))
+            .jsonPath("$.transactionId")
+            .value(is(DEFAULT_TRANSACTION_ID));
     }
 
     @Test
@@ -310,7 +291,8 @@ class SmartTradeResourceIT {
             .rate(UPDATED_RATE)
             .amount(UPDATED_AMOUNT)
             .contraAmount(UPDATED_CONTRA_AMOUNT)
-            .valueDate(UPDATED_VALUE_DATE);
+            .valueDate(UPDATED_VALUE_DATE)
+            .transactionId(UPDATED_TRANSACTION_ID);
 
         webTestClient
             .put()
@@ -332,6 +314,7 @@ class SmartTradeResourceIT {
         assertThat(testSmartTrade.getAmount()).isEqualByComparingTo(UPDATED_AMOUNT);
         assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(UPDATED_CONTRA_AMOUNT);
         assertThat(testSmartTrade.getValueDate()).isEqualTo(UPDATED_VALUE_DATE);
+        assertThat(testSmartTrade.getTransactionId()).isEqualTo(UPDATED_TRANSACTION_ID);
     }
 
     @Test
@@ -427,6 +410,7 @@ class SmartTradeResourceIT {
         assertThat(testSmartTrade.getAmount()).isEqualByComparingTo(UPDATED_AMOUNT);
         assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(UPDATED_CONTRA_AMOUNT);
         assertThat(testSmartTrade.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
+        assertThat(testSmartTrade.getTransactionId()).isEqualTo(DEFAULT_TRANSACTION_ID);
     }
 
     @Test
@@ -447,7 +431,8 @@ class SmartTradeResourceIT {
             .rate(UPDATED_RATE)
             .amount(UPDATED_AMOUNT)
             .contraAmount(UPDATED_CONTRA_AMOUNT)
-            .valueDate(UPDATED_VALUE_DATE);
+            .valueDate(UPDATED_VALUE_DATE)
+            .transactionId(UPDATED_TRANSACTION_ID);
 
         webTestClient
             .patch()
@@ -469,6 +454,7 @@ class SmartTradeResourceIT {
         assertThat(testSmartTrade.getAmount()).isEqualByComparingTo(UPDATED_AMOUNT);
         assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(UPDATED_CONTRA_AMOUNT);
         assertThat(testSmartTrade.getValueDate()).isEqualTo(UPDATED_VALUE_DATE);
+        assertThat(testSmartTrade.getTransactionId()).isEqualTo(UPDATED_TRANSACTION_ID);
     }
 
     @Test

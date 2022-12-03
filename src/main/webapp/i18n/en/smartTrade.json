@@ -25,7 +25,7 @@
       "amount": "Amount",
       "contraAmount": "Contra Amount",
       "valueDate": "Value Date",
-      "customer": "Customer"
+      "transactionId": "Transaction Id"
     }
   }
 }

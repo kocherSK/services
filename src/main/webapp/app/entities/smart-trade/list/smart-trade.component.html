@@ -40,7 +40,7 @@
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.amount">Amount</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.contraAmount">Contra Amount</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.valueDate">Value Date</span></th>
-          <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.customer">Customer</span></th>
+          <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.transactionId">Transaction Id</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -56,11 +56,7 @@
           <td>{{ smartTrade.amount }}</td>
           <td>{{ smartTrade.contraAmount }}</td>
           <td>{{ smartTrade.valueDate | formatMediumDate }}</td>
-          <td>
-            <div *ngIf="smartTrade.customer">
-              <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.customerHashCode }}</a>
-            </div>
-          </td>
+          <td>{{ smartTrade.transactionId }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

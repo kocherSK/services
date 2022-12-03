@@ -3,12 +3,10 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { ISmartTrade, SmartTrade } from '../smart-trade.model';
 import { SmartTradeService } from '../service/smart-trade.service';
-import { ICustomer } from 'app/entities/customer/customer.model';
-import { CustomerService } from 'app/entities/customer/service/customer.service';
 
 @Component({
   selector: 'jhi-smart-trade-update',
@@ -16,8 +14,6 @@ import { CustomerService } from 'app/entities/customer/service/customer.service'
 })
 export class SmartTradeUpdateComponent implements OnInit {
   isSaving = false;
-
-  customersSharedCollection: ICustomer[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -28,21 +24,14 @@ export class SmartTradeUpdateComponent implements OnInit {
     amount: [],
     contraAmount: [],
     valueDate: [],
-    customer: [],
+    transactionId: [],
   });
 
-  constructor(
-    protected smartTradeService: SmartTradeService,
-    protected customerService: CustomerService,
-    protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
-  ) {}
+  constructor(protected smartTradeService: SmartTradeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ smartTrade }) => {
       this.updateForm(smartTrade);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -58,10 +47,6 @@ export class SmartTradeUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.smartTradeService.create(smartTrade));
     }
-  }
-
-  trackCustomerById(_index: number, item: ICustomer): string {
-    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISmartTrade>>): void {
@@ -93,25 +78,8 @@ export class SmartTradeUpdateComponent implements OnInit {
       amount: smartTrade.amount,
       contraAmount: smartTrade.contraAmount,
       valueDate: smartTrade.valueDate,
-      customer: smartTrade.customer,
+      transactionId: smartTrade.transactionId,
     });
-
-    this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing(
-      this.customersSharedCollection,
-      smartTrade.customer
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.customerService
-      .query()
-      .pipe(map((res: HttpResponse<ICustomer[]>) => res.body ?? []))
-      .pipe(
-        map((customers: ICustomer[]) =>
-          this.customerService.addCustomerToCollectionIfMissing(customers, this.editForm.get('customer')!.value)
-        )
-      )
-      .subscribe((customers: ICustomer[]) => (this.customersSharedCollection = customers));
   }
 
   protected createFromForm(): ISmartTrade {
@@ -125,7 +93,7 @@ export class SmartTradeUpdateComponent implements OnInit {
       amount: this.editForm.get(['amount'])!.value,
       contraAmount: this.editForm.get(['contraAmount'])!.value,
       valueDate: this.editForm.get(['valueDate'])!.value,
-      customer: this.editForm.get(['customer'])!.value,
+      transactionId: this.editForm.get(['transactionId'])!.value,
     };
   }
 }

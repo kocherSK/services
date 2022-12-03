@@ -32,6 +32,7 @@ describe('SmartTrade Service', () => {
       amount: 0,
       contraAmount: 0,
       valueDate: currentDate,
+      transactionId: 'AAAAAAA',
     };
   });
 
@@ -85,6 +86,7 @@ describe('SmartTrade Service', () => {
           amount: 1,
           contraAmount: 1,
           valueDate: currentDate.format(DATE_FORMAT),
+          transactionId: 'BBBBBB',
         },
         elemDefault
       );
@@ -111,6 +113,7 @@ describe('SmartTrade Service', () => {
           rate: 1,
           amount: 1,
           contraAmount: 1,
+          transactionId: 'BBBBBB',
         },
         new SmartTrade()
       );
@@ -142,6 +145,7 @@ describe('SmartTrade Service', () => {
           amount: 1,
           contraAmount: 1,
           valueDate: currentDate.format(DATE_FORMAT),
+          transactionId: 'BBBBBB',
         },
         elemDefault
       );
@@ -198,7 +202,7 @@ describe('SmartTrade Service', () => {
       });
 
       it('should add only unique SmartTrade to an array', () => {
-        const smartTradeArray: ISmartTrade[] = [{ id: 'ABC' }, { id: 'CBA' }, { id: '8c1a7734-4635-4c4a-8239-ddd346fa07e9' }];
+        const smartTradeArray: ISmartTrade[] = [{ id: 'ABC' }, { id: 'CBA' }, { id: 'c1a77344-635c-44a4-a39d-dd346fa07e96' }];
         const smartTradeCollection: ISmartTrade[] = [{ id: 'ABC' }];
         expectedResult = service.addSmartTradeToCollectionIfMissing(smartTradeCollection, ...smartTradeArray);
         expect(expectedResult).toHaveLength(3);

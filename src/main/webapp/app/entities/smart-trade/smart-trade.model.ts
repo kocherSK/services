@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-import { ICustomer } from 'app/entities/customer/customer.model';
 
 export interface ISmartTrade {
   id?: string;
@@ -10,7 +9,7 @@ export interface ISmartTrade {
   amount?: number | null;
   contraAmount?: number | null;
   valueDate?: dayjs.Dayjs | null;
-  customer?: ICustomer | null;
+  transactionId?: string | null;
 }
 
 export class SmartTrade implements ISmartTrade {
@@ -23,7 +22,7 @@ export class SmartTrade implements ISmartTrade {
     public amount?: number | null,
     public contraAmount?: number | null,
     public valueDate?: dayjs.Dayjs | null,
-    public customer?: ICustomer | null
+    public transactionId?: string | null
   ) {}
 }
 

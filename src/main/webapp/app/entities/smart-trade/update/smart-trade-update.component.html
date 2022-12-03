@@ -93,16 +93,15 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.customer" for="field_customer">Customer</label>
-          <select class="form-control" id="field_customer" data-cy="customer" name="customer" formControlName="customer">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="customerOption.id === editForm.get('customer')!.value?.id ? editForm.get('customer')!.value : customerOption"
-              *ngFor="let customerOption of customersSharedCollection; trackBy: trackCustomerById"
-            >
-              {{ customerOption.customerHashCode }}
-            </option>
-          </select>
+          <label class="form-label" jhiTranslate="gatewaybosApp.smartTrade.transactionId" for="field_transactionId">Transaction Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="transactionId"
+            id="field_transactionId"
+            data-cy="transactionId"
+            formControlName="transactionId"
+          />
         </div>
       </div>
 

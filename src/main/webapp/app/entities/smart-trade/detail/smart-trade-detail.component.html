@@ -42,11 +42,9 @@
         <dd>
           <span>{{ smartTrade.valueDate | formatMediumDate }}</span>
         </dd>
-        <dt><span jhiTranslate="gatewaybosApp.smartTrade.customer">Customer</span></dt>
+        <dt><span jhiTranslate="gatewaybosApp.smartTrade.transactionId">Transaction Id</span></dt>
         <dd>
-          <div *ngIf="smartTrade.customer">
-            <a [routerLink]="['/customer', smartTrade.customer?.id, 'view']">{{ smartTrade.customer?.customerHashCode }}</a>
-          </div>
+          <span>{{ smartTrade.transactionId }}</span>
         </dd>
       </dl>
 
