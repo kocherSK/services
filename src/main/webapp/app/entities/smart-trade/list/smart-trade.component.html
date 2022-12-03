@@ -34,6 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.counterParty">Counter Party</span></th>
+          <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.tradingParty">Trading Party</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.currencyBuy">Currency Buy</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.currencySell">Currency Sell</span></th>
           <th scope="col"><span jhiTranslate="gatewaybosApp.smartTrade.rate">Rate</span></th>
@@ -51,6 +52,7 @@
             <a [routerLink]="['/smart-trade', smartTrade.id, 'view']">{{ smartTrade.id }}</a>
           </td>
           <td>{{ smartTrade.counterParty }}</td>
+          <td>{{ smartTrade.tradingParty }}</td>
           <td>{{ smartTrade.currencyBuy }}</td>
           <td>{{ smartTrade.currencySell }}</td>
           <td>{{ smartTrade.rate }}</td>

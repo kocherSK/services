@@ -11,6 +11,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "tradingParty",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "currencyBuy",
       "fieldType": "String"
     },

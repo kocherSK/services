@@ -3,6 +3,7 @@ import dayjs from 'dayjs/esm';
 export interface ISmartTrade {
   id?: string;
   counterParty?: string | null;
+  tradingParty?: string | null;
   currencyBuy?: string | null;
   currencySell?: string | null;
   rate?: number | null;
@@ -17,6 +18,7 @@ export class SmartTrade implements ISmartTrade {
   constructor(
     public id?: string,
     public counterParty?: string | null,
+    public tradingParty?: string | null,
     public currencyBuy?: string | null,
     public currencySell?: string | null,
     public rate?: number | null,

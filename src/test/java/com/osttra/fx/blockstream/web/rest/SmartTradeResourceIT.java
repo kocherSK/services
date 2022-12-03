@@ -33,6 +33,9 @@ class SmartTradeResourceIT {
     private static final String DEFAULT_COUNTER_PARTY = "AAAAAAAAAA";
     private static final String UPDATED_COUNTER_PARTY = "BBBBBBBBBB";
 
+    private static final String DEFAULT_TRADING_PARTY = "AAAAAAAAAA";
+    private static final String UPDATED_TRADING_PARTY = "BBBBBBBBBB";
+
     private static final String DEFAULT_CURRENCY_BUY = "AAAAAAAAAA";
     private static final String UPDATED_CURRENCY_BUY = "BBBBBBBBBB";
 
@@ -77,6 +80,7 @@ class SmartTradeResourceIT {
     public static SmartTrade createEntity() {
         SmartTrade smartTrade = new SmartTrade()
             .counterParty(DEFAULT_COUNTER_PARTY)
+            .tradingParty(DEFAULT_TRADING_PARTY)
             .currencyBuy(DEFAULT_CURRENCY_BUY)
             .currencySell(DEFAULT_CURRENCY_SELL)
             .rate(DEFAULT_RATE)
@@ -97,6 +101,7 @@ class SmartTradeResourceIT {
     public static SmartTrade createUpdatedEntity() {
         SmartTrade smartTrade = new SmartTrade()
             .counterParty(UPDATED_COUNTER_PARTY)
+            .tradingParty(UPDATED_TRADING_PARTY)
             .currencyBuy(UPDATED_CURRENCY_BUY)
             .currencySell(UPDATED_CURRENCY_SELL)
             .rate(UPDATED_RATE)
@@ -132,6 +137,7 @@ class SmartTradeResourceIT {
         assertThat(smartTradeList).hasSize(databaseSizeBeforeCreate + 1);
         SmartTrade testSmartTrade = smartTradeList.get(smartTradeList.size() - 1);
         assertThat(testSmartTrade.getCounterParty()).isEqualTo(DEFAULT_COUNTER_PARTY);
+        assertThat(testSmartTrade.getTradingParty()).isEqualTo(DEFAULT_TRADING_PARTY);
         assertThat(testSmartTrade.getCurrencyBuy()).isEqualTo(DEFAULT_CURRENCY_BUY);
         assertThat(testSmartTrade.getCurrencySell()).isEqualTo(DEFAULT_CURRENCY_SELL);
         assertThat(testSmartTrade.getRate()).isEqualTo(DEFAULT_RATE);
@@ -188,6 +194,7 @@ class SmartTradeResourceIT {
         assertThat(smartTradeList).hasSize(1);
         SmartTrade testSmartTrade = smartTradeList.get(0);
         assertThat(testSmartTrade.getCounterParty()).isEqualTo(DEFAULT_COUNTER_PARTY);
+        assertThat(testSmartTrade.getTradingParty()).isEqualTo(DEFAULT_TRADING_PARTY);
         assertThat(testSmartTrade.getCurrencyBuy()).isEqualTo(DEFAULT_CURRENCY_BUY);
         assertThat(testSmartTrade.getCurrencySell()).isEqualTo(DEFAULT_CURRENCY_SELL);
         assertThat(testSmartTrade.getRate()).isEqualTo(DEFAULT_RATE);
@@ -218,6 +225,8 @@ class SmartTradeResourceIT {
             .value(hasItem(smartTrade.getId()))
             .jsonPath("$.[*].counterParty")
             .value(hasItem(DEFAULT_COUNTER_PARTY))
+            .jsonPath("$.[*].tradingParty")
+            .value(hasItem(DEFAULT_TRADING_PARTY))
             .jsonPath("$.[*].currencyBuy")
             .value(hasItem(DEFAULT_CURRENCY_BUY))
             .jsonPath("$.[*].currencySell")
@@ -256,6 +265,8 @@ class SmartTradeResourceIT {
             .value(is(smartTrade.getId()))
             .jsonPath("$.counterParty")
             .value(is(DEFAULT_COUNTER_PARTY))
+            .jsonPath("$.tradingParty")
+            .value(is(DEFAULT_TRADING_PARTY))
             .jsonPath("$.currencyBuy")
             .value(is(DEFAULT_CURRENCY_BUY))
             .jsonPath("$.currencySell")
@@ -297,6 +308,7 @@ class SmartTradeResourceIT {
         SmartTrade updatedSmartTrade = smartTradeRepository.findById(smartTrade.getId()).block();
         updatedSmartTrade
             .counterParty(UPDATED_COUNTER_PARTY)
+            .tradingParty(UPDATED_TRADING_PARTY)
             .currencyBuy(UPDATED_CURRENCY_BUY)
             .currencySell(UPDATED_CURRENCY_SELL)
             .rate(UPDATED_RATE)
@@ -320,6 +332,7 @@ class SmartTradeResourceIT {
         assertThat(smartTradeList).hasSize(databaseSizeBeforeUpdate);
         SmartTrade testSmartTrade = smartTradeList.get(smartTradeList.size() - 1);
         assertThat(testSmartTrade.getCounterParty()).isEqualTo(UPDATED_COUNTER_PARTY);
+        assertThat(testSmartTrade.getTradingParty()).isEqualTo(UPDATED_TRADING_PARTY);
         assertThat(testSmartTrade.getCurrencyBuy()).isEqualTo(UPDATED_CURRENCY_BUY);
         assertThat(testSmartTrade.getCurrencySell()).isEqualTo(UPDATED_CURRENCY_SELL);
         assertThat(testSmartTrade.getRate()).isEqualTo(UPDATED_RATE);
@@ -401,7 +414,7 @@ class SmartTradeResourceIT {
         SmartTrade partialUpdatedSmartTrade = new SmartTrade();
         partialUpdatedSmartTrade.setId(smartTrade.getId());
 
-        partialUpdatedSmartTrade.rate(UPDATED_RATE).amount(UPDATED_AMOUNT).contraAmount(UPDATED_CONTRA_AMOUNT);
+        partialUpdatedSmartTrade.currencySell(UPDATED_CURRENCY_SELL).rate(UPDATED_RATE).amount(UPDATED_AMOUNT).direction(UPDATED_DIRECTION);
 
         webTestClient
             .patch()
@@ -417,14 +430,15 @@ class SmartTradeResourceIT {
         assertThat(smartTradeList).hasSize(databaseSizeBeforeUpdate);
         SmartTrade testSmartTrade = smartTradeList.get(smartTradeList.size() - 1);
         assertThat(testSmartTrade.getCounterParty()).isEqualTo(DEFAULT_COUNTER_PARTY);
+        assertThat(testSmartTrade.getTradingParty()).isEqualTo(DEFAULT_TRADING_PARTY);
         assertThat(testSmartTrade.getCurrencyBuy()).isEqualTo(DEFAULT_CURRENCY_BUY);
-        assertThat(testSmartTrade.getCurrencySell()).isEqualTo(DEFAULT_CURRENCY_SELL);
+        assertThat(testSmartTrade.getCurrencySell()).isEqualTo(UPDATED_CURRENCY_SELL);
         assertThat(testSmartTrade.getRate()).isEqualTo(UPDATED_RATE);
         assertThat(testSmartTrade.getAmount()).isEqualByComparingTo(UPDATED_AMOUNT);
-        assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(UPDATED_CONTRA_AMOUNT);
+        assertThat(testSmartTrade.getContraAmount()).isEqualByComparingTo(DEFAULT_CONTRA_AMOUNT);
         assertThat(testSmartTrade.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
         assertThat(testSmartTrade.getTransactionId()).isEqualTo(DEFAULT_TRANSACTION_ID);
-        assertThat(testSmartTrade.getDirection()).isEqualTo(DEFAULT_DIRECTION);
+        assertThat(testSmartTrade.getDirection()).isEqualTo(UPDATED_DIRECTION);
     }
 
     @Test
@@ -440,6 +454,7 @@ class SmartTradeResourceIT {
 
         partialUpdatedSmartTrade
             .counterParty(UPDATED_COUNTER_PARTY)
+            .tradingParty(UPDATED_TRADING_PARTY)
             .currencyBuy(UPDATED_CURRENCY_BUY)
             .currencySell(UPDATED_CURRENCY_SELL)
             .rate(UPDATED_RATE)
@@ -463,6 +478,7 @@ class SmartTradeResourceIT {
         assertThat(smartTradeList).hasSize(databaseSizeBeforeUpdate);
         SmartTrade testSmartTrade = smartTradeList.get(smartTradeList.size() - 1);
         assertThat(testSmartTrade.getCounterParty()).isEqualTo(UPDATED_COUNTER_PARTY);
+        assertThat(testSmartTrade.getTradingParty()).isEqualTo(UPDATED_TRADING_PARTY);
         assertThat(testSmartTrade.getCurrencyBuy()).isEqualTo(UPDATED_CURRENCY_BUY);
         assertThat(testSmartTrade.getCurrencySell()).isEqualTo(UPDATED_CURRENCY_SELL);
         assertThat(testSmartTrade.getRate()).isEqualTo(UPDATED_RATE);

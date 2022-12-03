@@ -21,6 +21,9 @@ public class SmartTrade implements Serializable {
     @Field("counter_party")
     private String counterParty;
 
+    @Field("trading_party")
+    private String tradingParty;
+
     @Field("currency_buy")
     private String currencyBuy;
 
@@ -71,6 +74,19 @@ public class SmartTrade implements Serializable {
 
     public void setCounterParty(String counterParty) {
         this.counterParty = counterParty;
+    }
+
+    public String getTradingParty() {
+        return this.tradingParty;
+    }
+
+    public SmartTrade tradingParty(String tradingParty) {
+        this.setTradingParty(tradingParty);
+        return this;
+    }
+
+    public void setTradingParty(String tradingParty) {
+        this.tradingParty = tradingParty;
     }
 
     public String getCurrencyBuy() {
@@ -202,6 +218,7 @@ public class SmartTrade implements Serializable {
         return "SmartTrade{" +
             "id=" + getId() +
             ", counterParty='" + getCounterParty() + "'" +
+            ", tradingParty='" + getTradingParty() + "'" +
             ", currencyBuy='" + getCurrencyBuy() + "'" +
             ", currencySell='" + getCurrencySell() + "'" +
             ", rate=" + getRate() +

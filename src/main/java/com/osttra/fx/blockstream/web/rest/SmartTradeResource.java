@@ -147,6 +147,9 @@ public class SmartTradeResource {
                         if (smartTrade.getCounterParty() != null) {
                             existingSmartTrade.setCounterParty(smartTrade.getCounterParty());
                         }
+                        if (smartTrade.getTradingParty() != null) {
+                            existingSmartTrade.setTradingParty(smartTrade.getTradingParty());
+                        }
                         if (smartTrade.getCurrencyBuy() != null) {
                             existingSmartTrade.setCurrencyBuy(smartTrade.getCurrencyBuy());
                         }

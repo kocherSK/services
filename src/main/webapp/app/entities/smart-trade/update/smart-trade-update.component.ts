@@ -18,6 +18,7 @@ export class SmartTradeUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     counterParty: [],
+    tradingParty: [],
     currencyBuy: [],
     currencySell: [],
     rate: [],
@@ -73,6 +74,7 @@ export class SmartTradeUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: smartTrade.id,
       counterParty: smartTrade.counterParty,
+      tradingParty: smartTrade.tradingParty,
       currencyBuy: smartTrade.currencyBuy,
       currencySell: smartTrade.currencySell,
       rate: smartTrade.rate,
@@ -89,6 +91,7 @@ export class SmartTradeUpdateComponent implements OnInit {
       ...new SmartTrade(),
       id: this.editForm.get(['id'])!.value,
       counterParty: this.editForm.get(['counterParty'])!.value,
+      tradingParty: this.editForm.get(['tradingParty'])!.value,
       currencyBuy: this.editForm.get(['currencyBuy'])!.value,
       currencySell: this.editForm.get(['currencySell'])!.value,
       rate: this.editForm.get(['rate'])!.value,

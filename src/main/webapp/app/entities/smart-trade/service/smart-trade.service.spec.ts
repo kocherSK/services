@@ -26,6 +26,7 @@ describe('SmartTrade Service', () => {
     elemDefault = {
       id: 'AAAAAAA',
       counterParty: 'AAAAAAA',
+      tradingParty: 'AAAAAAA',
       currencyBuy: 'AAAAAAA',
       currencySell: 'AAAAAAA',
       rate: 0,
@@ -81,6 +82,7 @@ describe('SmartTrade Service', () => {
         {
           id: 'BBBBBB',
           counterParty: 'BBBBBB',
+          tradingParty: 'BBBBBB',
           currencyBuy: 'BBBBBB',
           currencySell: 'BBBBBB',
           rate: 1,
@@ -111,12 +113,12 @@ describe('SmartTrade Service', () => {
       const patchObject = Object.assign(
         {
           counterParty: 'BBBBBB',
-          currencyBuy: 'BBBBBB',
+          tradingParty: 'BBBBBB',
+          currencySell: 'BBBBBB',
           rate: 1,
           amount: 1,
-          contraAmount: 1,
+          valueDate: currentDate.format(DATE_FORMAT),
           transactionId: 'BBBBBB',
-          direction: 'BBBBBB',
         },
         new SmartTrade()
       );
@@ -142,6 +144,7 @@ describe('SmartTrade Service', () => {
         {
           id: 'BBBBBB',
           counterParty: 'BBBBBB',
+          tradingParty: 'BBBBBB',
           currencyBuy: 'BBBBBB',
           currencySell: 'BBBBBB',
           rate: 1,
@@ -206,7 +209,7 @@ describe('SmartTrade Service', () => {
       });
 
       it('should add only unique SmartTrade to an array', () => {
-        const smartTradeArray: ISmartTrade[] = [{ id: 'ABC' }, { id: 'CBA' }, { id: '1a773446-35c4-4a42-b9dd-d346fa07e96a' }];
+        const smartTradeArray: ISmartTrade[] = [{ id: 'ABC' }, { id: 'CBA' }, { id: 'a7734463-5c4a-4423-9ddd-346fa07e96ac' }];
         const smartTradeCollection: ISmartTrade[] = [{ id: 'ABC' }];
         expectedResult = service.addSmartTradeToCollectionIfMissing(smartTradeCollection, ...smartTradeArray);
         expect(expectedResult).toHaveLength(3);
